@@ -13,7 +13,13 @@ jobs:
         with:
           java-version: 17
       - name: Build with Maven Wrapper
-        run: ./mvnw test -B
+        run: |
+          export MAVEN_OPTS=" --add-exports jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED \
+            --add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED \
+            --add-exports jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED \
+            --add-exports jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED \
+            --add-exports jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED "
+          ./mvnw test -B
       - name: Publish Test Report
         if: ${{ always() }}
         uses: scacap/action-surefire-report@v1
